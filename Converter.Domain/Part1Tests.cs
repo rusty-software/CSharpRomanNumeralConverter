@@ -32,12 +32,30 @@ namespace Converter.Domain
             Assert.AreEqual("DIII", RomanNumeralConverter.ToRoman(503));
             Assert.AreEqual("MI", RomanNumeralConverter.ToRoman(1001));
         }
+
+        [TestMethod]
+        public void OnePowerLessThan_ReturnsPrefixed()
+        {
+            Assert.AreEqual("IV", RomanNumeralConverter.ToRoman(4));
+            Assert.AreEqual("IX", RomanNumeralConverter.ToRoman(9));
+            Assert.AreEqual("XIV", RomanNumeralConverter.ToRoman(14));
+            Assert.AreEqual("XIX", RomanNumeralConverter.ToRoman(19));
+            Assert.AreEqual("XXIV", RomanNumeralConverter.ToRoman(24));
+            Assert.AreEqual("XXIX", RomanNumeralConverter.ToRoman(29));
+            Assert.AreEqual("XXXIV", RomanNumeralConverter.ToRoman(34));
+            Assert.AreEqual("XXXIX", RomanNumeralConverter.ToRoman(39));
+            Assert.AreEqual("XL", RomanNumeralConverter.ToRoman(40));
+            Assert.AreEqual("XC", RomanNumeralConverter.ToRoman(90));
+            Assert.AreEqual("CD", RomanNumeralConverter.ToRoman(400));
+            Assert.AreEqual("CM", RomanNumeralConverter.ToRoman(900));
+            Assert.AreEqual("MCD", RomanNumeralConverter.ToRoman(1400));
+        }
     }
 
     public static class RomanNumeralConverter
     {
-        private static List<string> romans = new List<string> { "M" ,"D", "C", "L", "X", "V", "I" };
-        private static List<int> arabics = new List<int> { 1000, 500, 100, 50, 10, 5, 1 };
+        private static List<string> romans = new List<string> { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
+        private static List<int> arabics = new List<int> { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
 
         public static string ToRoman(int arabic)
         {
