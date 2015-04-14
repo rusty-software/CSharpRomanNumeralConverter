@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Text;
+using System.Linq;
 
 namespace Converter.Domain
 {
@@ -18,24 +20,38 @@ namespace Converter.Domain
             Assert.AreEqual("D", RomanNumeralConverter.ToRoman(500));
             Assert.AreEqual("M", RomanNumeralConverter.ToRoman(1000));
         }
+
+        [TestMethod]
+        public void UpToThreeOver_ReturnsExtraIs()
+        {
+            Assert.AreEqual("III", RomanNumeralConverter.ToRoman(3));
+            Assert.AreEqual("VII", RomanNumeralConverter.ToRoman(7));
+            Assert.AreEqual("XIII", RomanNumeralConverter.ToRoman(13));
+            Assert.AreEqual("LI", RomanNumeralConverter.ToRoman(51));
+            Assert.AreEqual("CII", RomanNumeralConverter.ToRoman(102));
+            Assert.AreEqual("DIII", RomanNumeralConverter.ToRoman(503));
+            Assert.AreEqual("MI", RomanNumeralConverter.ToRoman(1001));
+        }
     }
 
     public static class RomanNumeralConverter
     {
-        private static Dictionary<int, string> arabicRomanMap = new Dictionary<int, string>
-        {
-            {1, "I"},
-            {5, "V"},
-            {10, "X"},
-            {50, "L"},
-            {100, "C"},
-            {500, "D"},
-            {1000, "M"},
-        };
+        private static List<string> romans = new List<string> { "M" ,"D", "C", "L", "X", "V", "I" };
+        private static List<int> arabics = new List<int> { 1000, 500, 100, 50, 10, 5, 1 };
 
         public static string ToRoman(int arabic)
         {
-            return arabicRomanMap[arabic];
+            var n = arabic;
+            var roman = new StringBuilder();
+
+            while (n > 0)
+            {
+                var nextArabic = arabics.Where(a => a <= n).Max();
+                roman.Append(romans[arabics.IndexOf(nextArabic)]);
+                n -= nextArabic;
+            }
+            
+            return roman.ToString();
         }
     }
 }
